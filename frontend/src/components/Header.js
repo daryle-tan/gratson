@@ -5,10 +5,13 @@ import { FaUser } from "react-icons/fa"
 const Header = () => {
   return (
     <header>
-      <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
-        <Container className="d-flex justify-content-start">
-          <Navbar.Toggle aria-controls="basic-navbar-nav" className="me-2" />
-          <Navbar.Brand href="/">Gratson</Navbar.Brand>
+      <Navbar bg="black" variant="dark" expand="md" collapseOnSelect>
+        <Container fluid className="d-flex justify-content-start">
+          <Navbar.Toggle
+            aria-controls="basic-navbar-nav"
+            className="me-2 custom-toggler"
+          />
+          <Navbar.Brand href="/">Graston</Navbar.Brand>
           <Button
             variant="outline-success"
             href="/bookNow"
