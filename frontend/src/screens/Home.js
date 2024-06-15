@@ -10,9 +10,6 @@ const Home = () => {
             src="../home.webp"
             alt="Physical therapy work on a client"
             className="full-width-image"
-            //   object-fit="cover"
-            //   width="100%"
-            //   height="100%"
           ></img>
         </Col>
       </Row>
