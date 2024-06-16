@@ -1,12 +1,12 @@
 import React from "react"
 import { Container, Row, Col } from "react-bootstrap"
 
-const BookNow = () => {
+const AboutMe = () => {
   return (
-    <Container className="bookNow d-flex vh-100 w-100 mt-4 justify-content-center align-items-center">
+    <Container className="aboutMe d-flex vh-100 w-100 mt-4 justify-content-center align-items-center">
       <Row>
         <Col className="text-center">
-          <h1 className="display-2">Schedule Your Session</h1>
+          <h1 className="display-2">Meet Your Graston Practioner</h1>
           <p className="fs-4">Reduce Pain. Prevent Injuries. Recover Faster.</p>
           {/* <img
             className="why-choose-graston-pic"
@@ -19,4 +19,4 @@ const BookNow = () => {
   )
 }
 
-export default BookNow
+export default AboutMe

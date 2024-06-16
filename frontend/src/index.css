@@ -38,9 +38,9 @@ code {
   padding: 0;
 }
 
-/* .container {
-  background-color: black;
-} */
+.navbar {
+  align-items: normal;
+}
 
 .full-width-image {
   width: 100%;

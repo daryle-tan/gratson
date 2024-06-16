@@ -5,20 +5,20 @@ import { FaUser } from "react-icons/fa"
 const Header = () => {
   return (
     <header>
-      <Navbar bg="black" variant="dark" expand="md" collapseOnSelect>
+      <Navbar
+        bg="black"
+        variant="dark"
+        expand="md"
+        className="navbar"
+        collapseOnSelect
+      >
         <Container fluid className="d-flex justify-content-start">
           <Navbar.Toggle
             aria-controls="basic-navbar-nav"
             className="me-2 custom-toggler"
           />
           <Navbar.Brand href="/">Graston</Navbar.Brand>
-          <Button
-            variant="outline-success"
-            href="/bookNow"
-            className="ms-auto book-button"
-          >
-            BOOK NOW
-          </Button>
+
           <Navbar.Collapse
             id="basic-navbar-nav"
             className="justify-content-end"
@@ -34,14 +34,20 @@ const Header = () => {
                 href="/whatWeOffer"
                 className="text-white custom-nav-link"
               >
-                WHAT WE OFFER
-              </Nav.Link>
-              <Nav.Link href="/location" className="text-white custom-nav-link">
-                LOCATION
+                ABOUT ME
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
+        <div>
+          <Button
+            variant="outline-success"
+            href="/bookNow"
+            className="ms-auto book-button me-4"
+          >
+            BOOK NOW
+          </Button>
+        </div>
       </Navbar>
     </header>
   )
