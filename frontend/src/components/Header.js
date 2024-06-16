@@ -12,7 +12,7 @@ const Header = () => {
         className="navbar"
         collapseOnSelect
       >
-        <Container fluid className="d-flex justify-content-start">
+        <Container fluid className="d-flex justify-content-start custom-header">
           <Navbar.Toggle
             aria-controls="basic-navbar-nav"
             className="me-2 custom-toggler"
