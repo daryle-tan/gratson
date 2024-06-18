@@ -141,6 +141,13 @@ button:hover {
 }
 
 /* Calendar component styling */
+.rbc-calendar *,
+.rbc-calendar *:before,
+.rbc-calendar *:after {
+  box-sizing: inherit;
+  white-space: normal;
+}
+
 .rbc-calendar {
   background-color: #fff;
   border: 1px solid #ddd;
@@ -148,6 +155,40 @@ button:hover {
   overflow: hidden;
   width: 100%;
   overflow-wrap: break-word;
+}
+
+.rbc-time-header.rbc-overflowing {
+  /* border-right: 1px solid #ddd; */
+  border: none !important;
+  min-height: 20px;
+}
+
+.rbc-time-view .rbc-allday-cell {
+  border: none;
+  box-sizing: content-box;
+  width: 100%;
+  height: 0 !important;
+  position: relative;
+}
+
+.rbc-row-content {
+  border: none !important;
+  position: relative;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 4;
+  height: 0;
+}
+
+.rbc-timeslot-group > .rbc-time-slot > .rbc-label {
+  background-color: transparent;
+}
+
+.rbc-time-view .rbc-row {
+  box-sizing: border-box;
+  min-height: 0px !important;
+  border: none !important;
 }
 
 .rbc-toolbar {
@@ -174,14 +215,27 @@ button:hover {
 
 .rbc-time-view .rbc-row {
   box-sizing: border-box;
-  /* min-height: 20px; */
-  /* padding: 1px; */
+  min-height: 20px;
+  height: 100%;
+  border: none !important;
   overflow-wrap: break-word;
 }
+/* here */
+/* element.style {
+  background-color: #f8f9fa;
+}
+.rbc-time-content > .rbc-time-gutter {
+  flex: none;
+  background-color: transparent !important;
+} */
 
 .rbc-header {
   white-space: break-spaces;
-  /* overflow-wrap: break-word; */
+  border-bottom: none !important;
+}
+
+.rbc-time-column .rbc-timeslot-group {
+  flex: 1 1;
 }
 
 .rbc-time-slot {
@@ -189,6 +243,7 @@ button:hover {
   flex: 1 0;
   align-items: center;
   justify-content: center;
+  background-color: transparent;
 }
 
 .rbc-today {
@@ -199,4 +254,19 @@ button:hover {
   /* background-color: #007bff; */
   color: white;
   border: none;
+}
+
+.true-form {
+  width: 100%;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-schedule-label {
+  width: 100%;
 }

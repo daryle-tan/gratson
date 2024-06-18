@@ -6,9 +6,12 @@ import axios from "axios"
 
 const localizer = momentLocalizer(moment)
 
-const Scheduler = () => {
+const BookNow = () => {
   const [events, setEvents] = useState([])
   const [selectedDate, setSelectedDate] = useState(null)
+  const [clientName, setClientName] = useState("")
+  const [clientEmail, setClientEmail] = useState("")
+  const [clientPhone, setClientPhone] = useState("")
 
   useEffect(() => {
     // Fetch existing bookings from the server
@@ -27,12 +30,36 @@ const Scheduler = () => {
       })
   }, [])
 
-  const handleSelectSlot = ({ start }) => {
-    setSelectedDate(start)
-    console.log("Selected date:", start)
+  const isAllowedTimeSlot = (date) => {
+    const day = date.getDay()
+    const hour = date.getHours()
+
+    // Mon-Fri 7am - 9am
+    if (day >= 1 && day <= 5 && hour >= 7 && hour < 9) {
+      return true
+    }
+    // Evening Wed-Thu 5pm-7pm
+    if (day >= 3 && day <= 4 && hour >= 17 && hour < 19) {
+      return true
+    }
+    // Weekends 9am-12pm
+    if ((day === 0 || day === 6) && hour >= 9 && hour < 12) {
+      return true
+    }
+
+    return false
   }
 
-  const handleBooking = () => {
+  const handleSelectSlot = ({ start }) => {
+    if (isAllowedTimeSlot(start)) {
+      setSelectedDate(start)
+    } else {
+      alert("Selected time slot is not available for booking.")
+    }
+  }
+
+  const handleBooking = (e) => {
+    e.preventDefault()
     if (selectedDate) {
       axios
         .post("/api/bookings", { date: selectedDate })
@@ -41,6 +68,9 @@ const Scheduler = () => {
             start: new Date(response.data.date),
             end: new Date(moment(response.data.date).add(1, "hours").toDate()),
             title: "Booked",
+            name: clientName,
+            email: clientEmail,
+            phone: clientPhone,
           }
           setEvents([...events, newEvent])
           alert("Booking successful!")
@@ -65,19 +95,33 @@ const Scheduler = () => {
           views={["month", "week", "day"]}
           step={30}
           timeslots={1}
-          min={new Date(2021, 1, 1, 9, 0)}
-          max={new Date(2021, 1, 1, 17, 0)}
+          min={new Date(2021, 1, 1, 7, 0)}
+          max={new Date(2021, 1, 1, 19, 0)}
+          eventPropGetter={(event) => ({
+            style: {
+              backgroundColor: isAllowedTimeSlot(event.start)
+                ? "#dff0d8"
+                : "#f2dede",
+            },
+          })}
+          slotPropGetter={(date) => ({
+            style: {
+              backgroundColor: isAllowedTimeSlot(date) ? "#dff0d8" : "#f2dede",
+            },
+          })}
         />
         {selectedDate && (
-          <form>
-            <div>
-              <div className="form-group mt-3 background-grey">
+          <form className="true-form" onSubmit={handleBooking}>
+            <div className="form-container">
+              <div className="form-group mt-3 background-grey custom-schedule-label">
                 <input
                   type="text"
                   id="selectedDate"
                   className="form-control"
                   value={selectedDate.toString()}
                   readOnly
+                  style={{ backgroundColor: "black", color: "white" }}
+                  required
                 />
               </div>
 
@@ -86,7 +130,9 @@ const Scheduler = () => {
                   type="text"
                   id="name"
                   className="form-control"
-                  placeholder="Enter your name"
+                  placeholder="Enter Name"
+                  onChange={(e) => setClientName(e.target.value)}
+                  required
                 />
               </div>
 
@@ -95,7 +141,9 @@ const Scheduler = () => {
                   type="email"
                   id="email"
                   className="form-control"
-                  placeholder="Enter your email"
+                  placeholder="Enter Email"
+                  required
+                  onChange={(e) => setClientEmail(e.target.value)}
                 />
               </div>
 
@@ -104,11 +152,13 @@ const Scheduler = () => {
                   type="tel"
                   id="phone"
                   className="form-control"
-                  placeholder="Enter your phone number"
+                  placeholder="Enter Phone Number"
+                  onChange={(e) => setClientPhone(e.target.value)}
+                  required
                 />
               </div>
 
-              <button onClick={handleBooking} className="btn btn-primary mt-3">
+              <button type="submit" className="btn btn-primary mt-3">
                 Reserve Session
               </button>
             </div>
@@ -119,4 +169,4 @@ const Scheduler = () => {
   )
 }
 
-export default Scheduler
+export default BookNow
