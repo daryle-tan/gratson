@@ -8,7 +8,7 @@ const localizer = momentLocalizer(moment)
 
 const BookNow = () => {
   const [events, setEvents] = useState([])
-  const [selectedDate, setSelectedDate] = useState(null)
+  const [selectedSlot, setSelectedSlot] = useState(null)
   const [clientName, setClientName] = useState("")
   const [clientEmail, setClientEmail] = useState("")
   const [clientPhone, setClientPhone] = useState("")
@@ -46,23 +46,39 @@ const BookNow = () => {
     if ((day === 0 || day === 6) && hour >= 9 && hour < 12) {
       return true
     }
-
     return false
   }
 
   const handleSelectSlot = ({ start }) => {
-    if (isAllowedTimeSlot(start)) {
-      setSelectedDate(start)
-    } else {
+    if (!isAllowedTimeSlot(start)) {
       alert("Selected time slot is not available for booking.")
+      return
+    }
+
+    if (selectedSlot) {
+      const isAdjacent =
+        moment(start).isSame(moment(selectedSlot).add(30, "minutes")) ||
+        moment(start).isSame(moment(selectedSlot).subtract(30, "minutes"))
+      if (isAdjacent) {
+        setSelectedSlot({ start: selectedSlot, end: start })
+      } else {
+        setSelectedSlot(start)
+      }
+    } else {
+      setSelectedSlot(start)
     }
   }
 
   const handleBooking = (e) => {
     e.preventDefault()
-    if (selectedDate) {
+    if (selectedSlot) {
+      const bookingDate = selectedSlot.start || selectedSlot
+      const bookingEndDate = selectedSlot.end
+        ? selectedSlot.end
+        : moment(bookingDate).add(30, "minutes").toDate()
+
       axios
-        .post("/api/bookings", { date: selectedDate })
+        .post("/api/bookings", { date: bookingDate })
         .then((response) => {
           const newEvent = {
             start: new Date(response.data.date),
@@ -78,6 +94,41 @@ const BookNow = () => {
         .catch((error) => {
           console.error("Error booking slot:", error)
         })
+    }
+  }
+
+  const getSlotStyle = (date) => {
+    const dateTimestamp = date.getTime()
+    let selectedStart = selectedSlot
+    let selectedEnd = selectedSlot
+
+    if (selectedSlot && selectedSlot.start && selectedSlot.end) {
+      selectedStart = selectedSlot.start
+      selectedEnd = selectedSlot.end
+    }
+
+    if (
+      selectedStart &&
+      selectedEnd &&
+      selectedStart.getTime &&
+      selectedEnd.getTime
+    ) {
+      if (
+        dateTimestamp >= selectedStart.getTime() &&
+        dateTimestamp <= selectedEnd.getTime()
+      ) {
+        return { backgroundColor: "lightblue" }
+      }
+    } else if (
+      selectedStart &&
+      selectedStart.getTime &&
+      dateTimestamp === selectedStart.getTime()
+    ) {
+      return { backgroundColor: "lightblue" }
+    }
+
+    return {
+      backgroundColor: isAllowedTimeSlot(date) ? "#dff0d8" : "#f2dede",
     }
   }
 
@@ -97,20 +148,11 @@ const BookNow = () => {
           timeslots={1}
           min={new Date(2021, 1, 1, 7, 0)}
           max={new Date(2021, 1, 1, 19, 0)}
-          eventPropGetter={(event) => ({
-            style: {
-              backgroundColor: isAllowedTimeSlot(event.start)
-                ? "#dff0d8"
-                : "#f2dede",
-            },
-          })}
           slotPropGetter={(date) => ({
-            style: {
-              backgroundColor: isAllowedTimeSlot(date) ? "#dff0d8" : "#f2dede",
-            },
+            style: getSlotStyle(date),
           })}
         />
-        {selectedDate && (
+        {selectedSlot && (
           <form className="true-form" onSubmit={handleBooking}>
             <div className="form-container">
               <div className="form-group mt-3 background-grey custom-schedule-label">
@@ -118,7 +160,15 @@ const BookNow = () => {
                   type="text"
                   id="selectedDate"
                   className="form-control"
-                  value={selectedDate.toString()}
+                  value={`${moment(selectedSlot.start || selectedSlot).format(
+                    "ddd, MMMM Do , h:mm A",
+                  )} to ${
+                    selectedSlot.end
+                      ? moment(selectedSlot.end).format("ddd, MMMM Do , h:mm A")
+                      : moment(selectedSlot)
+                          .add(30, "minutes")
+                          .format("ddd, MMMM Do , h:mm A")
+                  }`}
                   readOnly
                   style={{ backgroundColor: "black", color: "white" }}
                   required
