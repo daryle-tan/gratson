@@ -49,7 +49,7 @@ const BookNow = () => {
     return false
   }
 
-  const handleSelectSlot = ({ start }) => {
+  const handleSelectSlot = ({ start, end }) => {
     if (!isAllowedTimeSlot(start)) {
       alert("Selected time slot is not available for booking.")
       return
@@ -60,7 +60,7 @@ const BookNow = () => {
         moment(start).isSame(moment(selectedSlot).add(30, "minutes")) ||
         moment(start).isSame(moment(selectedSlot).subtract(30, "minutes"))
       if (isAdjacent) {
-        setSelectedSlot({ start: selectedSlot, end: start })
+        setSelectedSlot({ start: selectedSlot, end: end })
       } else {
         setSelectedSlot(start)
       }
@@ -100,7 +100,7 @@ const BookNow = () => {
   const getSlotStyle = (date) => {
     const dateTimestamp = date.getTime()
     let selectedStart = selectedSlot
-    let selectedEnd = selectedSlot
+    let selectedEnd = moment(selectedSlot).add(1, "minutes").toDate()
 
     if (selectedSlot && selectedSlot.start && selectedSlot.end) {
       selectedStart = selectedSlot.start
@@ -115,7 +115,7 @@ const BookNow = () => {
     ) {
       if (
         dateTimestamp >= selectedStart.getTime() &&
-        dateTimestamp <= selectedEnd.getTime()
+        dateTimestamp < selectedEnd.getTime()
       ) {
         return { backgroundColor: "lightblue" }
       }
@@ -161,13 +161,11 @@ const BookNow = () => {
                   id="selectedDate"
                   className="form-control"
                   value={`${moment(selectedSlot.start || selectedSlot).format(
-                    "ddd, MMMM Do , h:mm A",
+                    "ddd, MMM D, h:mm A",
                   )} to ${
                     selectedSlot.end
-                      ? moment(selectedSlot.end).format("ddd, MMMM Do , h:mm A")
-                      : moment(selectedSlot)
-                          .add(30, "minutes")
-                          .format("ddd, MMMM Do , h:mm A")
+                      ? moment(selectedSlot.end).format("h:mm A")
+                      : moment(selectedSlot).add(30, "minutes").format("h:mm A")
                   }`}
                   readOnly
                   style={{ backgroundColor: "black", color: "white" }}

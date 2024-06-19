@@ -263,3 +263,7 @@ button:hover {
 .custom-schedule-label {
   width: 100%;
 }
+
+#selectedDate {
+  text-align: center;
+}
