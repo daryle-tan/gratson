@@ -128,7 +128,7 @@ const BookNow = () => {
     }
 
     return {
-      backgroundColor: isAllowedTimeSlot(date) ? "#dff0d8" : "#f2dede",
+      backgroundColor: isAllowedTimeSlot(date) ? "#dff0d8" : "darkgrey",
     }
   }
 

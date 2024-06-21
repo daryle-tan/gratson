@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap"
 
 const Whatis = () => {
   return (
-    <Container className="whatIsContainer d-flex vh-100 w-100 mt-4 justify-content-center align-items-center">
+    <Container className="whatIsContainer d-flex w-100 mt-4 justify-content-center align-items-center">
       <Row>
         <Col className="text-center custom-bg m-3 p-3 rounded">
           <h1 className="display-2">Why Choose Graston?</h1>

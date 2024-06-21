@@ -58,10 +58,6 @@ code {
   object-fit: cover;
 }
 
-/* .custom-bg {
-  background-color: rgba(236, 232, 232, 0.5);
-} */
-
 .custom-header {
   width: 70%;
 }
@@ -266,4 +262,11 @@ button:hover {
 
 #selectedDate {
   text-align: center;
+}
+
+.headshot-image {
+  width: 80%;
+  height: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
 }
