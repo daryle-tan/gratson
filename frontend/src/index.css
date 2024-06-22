@@ -240,7 +240,6 @@ button:hover {
 }
 
 .rbc-event {
-  /* background-color: #007bff; */
   color: white;
   border: none;
 }
@@ -265,8 +264,12 @@ button:hover {
 }
 
 .headshot-image {
-  width: 80%;
-  height: 50%;
+  width: 70%;
+  height: 30%;
   object-fit: cover;
   margin-bottom: 20px;
+}
+
+.row > * {
+  height: 100% !important;
 }

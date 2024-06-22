@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap"
 
 const Whatis = () => {
   return (
-    <Container className="whatIsContainer d-flex w-100 mt-4 justify-content-center align-items-center">
+    <Container className="whatIsContainer d-flex  w-100 mt-4 justify-content-center align-items-center">
       <Row>
         <Col className="text-center custom-bg m-3 p-3 rounded">
           <h1 className="display-2">Why Choose Graston?</h1>
@@ -20,11 +20,6 @@ const Whatis = () => {
             morbi. Cras pulvinar mattis nunc sed blandit libero volutpat.
             Adipiscing elit ut aliquam purus sit amet.
           </p>
-          {/* <img
-            className="why-choose-graston-pic"
-            src="../fitBody.webp"
-            alt="A woman working out"
-          ></img> */}
         </Col>
       </Row>
     </Container>

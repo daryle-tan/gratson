@@ -9,6 +9,7 @@ const localizer = momentLocalizer(moment)
 const BookNow = () => {
   const [events, setEvents] = useState([])
   const [selectedSlot, setSelectedSlot] = useState(null)
+  const [reserved, setReserved] = useState(false)
   const [clientName, setClientName] = useState("")
   const [clientEmail, setClientEmail] = useState("")
   const [clientPhone, setClientPhone] = useState("")
@@ -28,7 +29,7 @@ const BookNow = () => {
       .catch((error) => {
         console.error("Error fetching bookings:", error)
       })
-  }, [])
+  }, [reserved])
 
   const isAllowedTimeSlot = (date) => {
     const day = date.getDay()
@@ -89,6 +90,7 @@ const BookNow = () => {
             phone: clientPhone,
           }
           setEvents([...events, newEvent])
+          setReserved(true)
           alert("Booking successful!")
         })
         .catch((error) => {
@@ -99,6 +101,12 @@ const BookNow = () => {
 
   const getSlotStyle = (date) => {
     const dateTimestamp = date.getTime()
+    const isBooked = events.some(
+      (event) =>
+        dateTimestamp >= new Date(event.start).getTime() &&
+        dateTimestamp < new Date(event.end).getTime(),
+    )
+
     let selectedStart = selectedSlot
     let selectedEnd = moment(selectedSlot).add(1, "minutes").toDate()
 
@@ -128,7 +136,11 @@ const BookNow = () => {
     }
 
     return {
-      backgroundColor: isAllowedTimeSlot(date) ? "#dff0d8" : "darkgrey",
+      backgroundColor: isBooked
+        ? "darkgrey"
+        : isAllowedTimeSlot(date)
+        ? "#dff0d8"
+        : "darkgrey",
     }
   }
 
