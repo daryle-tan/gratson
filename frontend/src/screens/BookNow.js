@@ -20,14 +20,15 @@ const BookNow = () => {
       .get("/api/bookings")
       .then((response) => {
         const bookings = response.data.map((booking) => ({
-          start: new Date(booking.date),
-          end: new Date(moment(booking.date).add(1, "hours").toDate()),
-          title: "Booked",
+          start: new Date(booking.start),
+          end: new Date(moment(booking.end).add(1, "hours").toDate()),
+          // title: "Booked",
           name: booking.name,
           email: booking.email,
           phone: booking.phone,
         }))
         setEvents(bookings)
+        console.log(bookings)
       })
       .catch((error) => {
         console.error("Error fetching bookings:", error)
@@ -82,15 +83,25 @@ const BookNow = () => {
         : moment(bookingDate).add(30, "minutes").toDate()
 
       axios
-        .post("/api/bookings", { date: bookingDate })
+        .post("/api/bookings", {
+          start: bookingDate,
+          end: bookingEndDate,
+          name: clientName,
+          email: clientEmail,
+          phone: clientPhone,
+        })
         .then((response) => {
           const newEvent = {
-            start: new Date(response.data.date),
-            end: new Date(moment(response.data.date).add(1, "hours").toDate()),
-            title: "Booked",
-            name: clientName,
-            email: clientEmail,
-            phone: clientPhone,
+            // start: new Date(response.data.date),
+            // end: new Date(moment(response.data.date).add(1, "hours").toDate()),
+            // name: clientName,
+            // email: clientEmail,
+            // phone: clientPhone,
+            start: new Date(response.data.start),
+            end: new Date(response.data.end),
+            name: response.data.name,
+            email: response.data.email,
+            phone: response.data.phone,
           }
           setEvents([...events, newEvent])
           setReserved(true)
