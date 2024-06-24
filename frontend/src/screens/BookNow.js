@@ -23,6 +23,9 @@ const BookNow = () => {
           start: new Date(booking.date),
           end: new Date(moment(booking.date).add(1, "hours").toDate()),
           title: "Booked",
+          name: booking.name,
+          email: booking.email,
+          phone: booking.phone,
         }))
         setEvents(bookings)
       })
