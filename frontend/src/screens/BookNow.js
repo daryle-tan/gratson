@@ -8,11 +8,11 @@ const localizer = momentLocalizer(moment)
 
 const BookNow = () => {
   const [events, setEvents] = useState([])
-  const [selectedSlot, setSelectedSlot] = useState(null)
   const [reserved, setReserved] = useState(false)
   const [clientName, setClientName] = useState("")
   const [clientEmail, setClientEmail] = useState("")
   const [clientPhone, setClientPhone] = useState("")
+  const [selectedSlot, setSelectedSlot] = useState("")
 
   useEffect(() => {
     // Fetch existing bookings from the server
@@ -21,14 +21,13 @@ const BookNow = () => {
       .then((response) => {
         const bookings = response.data.map((booking) => ({
           start: new Date(booking.start),
-          end: new Date(moment(booking.end).add(1, "hours").toDate()),
-          // title: "Booked",
+          end: new Date(booking.end),
           name: booking.name,
           email: booking.email,
           phone: booking.phone,
         }))
         setEvents(bookings)
-        console.log(bookings)
+        console.log(bookings) //remove me later
       })
       .catch((error) => {
         console.error("Error fetching bookings:", error)
@@ -64,6 +63,7 @@ const BookNow = () => {
       const isAdjacent =
         moment(start).isSame(moment(selectedSlot).add(30, "minutes")) ||
         moment(start).isSame(moment(selectedSlot).subtract(30, "minutes"))
+
       if (isAdjacent) {
         setSelectedSlot({ start: selectedSlot, end: end })
       } else {
@@ -72,15 +72,15 @@ const BookNow = () => {
     } else {
       setSelectedSlot(start)
     }
+    console.log("start", selectedSlot.start, "end", selectedSlot.end)
   }
 
   const handleBooking = (e) => {
     e.preventDefault()
     if (selectedSlot) {
       const bookingDate = selectedSlot.start || selectedSlot
-      const bookingEndDate = selectedSlot.end
-        ? selectedSlot.end
-        : moment(bookingDate).add(30, "minutes").toDate()
+      const bookingEndDate =
+        selectedSlot.end || moment(bookingDate).add(30, "minutes").toDate()
 
       axios
         .post("/api/bookings", {
@@ -92,19 +92,26 @@ const BookNow = () => {
         })
         .then((response) => {
           const newEvent = {
-            // start: new Date(response.data.date),
-            // end: new Date(moment(response.data.date).add(1, "hours").toDate()),
-            // name: clientName,
-            // email: clientEmail,
-            // phone: clientPhone,
             start: new Date(response.data.start),
             end: new Date(response.data.end),
             name: response.data.name,
             email: response.data.email,
             phone: response.data.phone,
           }
+          console.log(
+            "start NewEvent",
+            newEvent.start,
+            "end NewEvent",
+            newEvent.end,
+          )
           setEvents([...events, newEvent])
           setReserved(true)
+
+          console.log("selectedSlot:", selectedSlot)
+          setClientName("")
+          setClientEmail("")
+          setClientPhone("")
+          setSelectedSlot("")
           alert("Booking successful!")
         })
         .catch((error) => {

@@ -273,3 +273,20 @@ button:hover {
 .row > * {
   height: 100% !important;
 }
+
+.rbc-day-slot .rbc-event-label {
+  flex: none;
+  padding-right: 5px;
+  width: 100%;
+  text-wrap: pretty;
+}
+
+.rbc-event-label {
+  /* font-size: xx-small !important;
+  text-align: center !important; */
+  display: none !important;
+}
+
+.rbc-day-slot .rbc-events-container {
+  margin-right: 0 !important;
+}

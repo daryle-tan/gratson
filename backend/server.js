@@ -68,6 +68,22 @@ app.post(
   }),
 )
 
+// @desc Delete a booking
+// @route DELETE/api/bookings
+app.delete(
+  "/api/booking/:id",
+  asyncHandler(async (req, res) => {
+    const { id } = req.params
+    const cancelBooking = await Booking.findByIdAndDelete(id)
+
+    if (!cancelBooking) {
+      return res.status(404).json({ message: "Booking not found" })
+    }
+
+    res.status(200).json({ message: "Booking canceled successfully!" })
+  }),
+)
+
 app.use(notFound)
 app.use(errorHandler)
 
