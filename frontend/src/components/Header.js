@@ -24,16 +24,10 @@ const Header = () => {
             className="justify-content-end"
           >
             <Nav className="ms-auto">
-              <Nav.Link
-                href="/whatIsGratson"
-                className="text-white custom-nav-link"
-              >
+              <Nav.Link href="#whatIs" className="text-white custom-nav-link">
                 WHAT IS GRATSON
               </Nav.Link>
-              <Nav.Link
-                href="/whatWeOffer"
-                className="text-white custom-nav-link"
-              >
+              <Nav.Link href="#aboutMe" className="text-white custom-nav-link">
                 ABOUT ME
               </Nav.Link>
             </Nav>
@@ -42,7 +36,7 @@ const Header = () => {
         <div>
           <Button
             variant="outline-success"
-            href="/bookNow"
+            href="#bookNow"
             className="ms-auto book-button me-4"
           >
             BOOK NOW

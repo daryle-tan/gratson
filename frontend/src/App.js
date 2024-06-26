@@ -12,15 +12,23 @@ const App = () => {
     <div className="d-flex flex-column min-vh-100">
       <Header />
       <Home />
-      <Whatis />
+
+      <section id="whatIs">
+        <Whatis />
+      </section>
+
       <div className="container-custom-split d-flex justify-content-center m-4">
         <div className="custom-split"></div>
       </div>
-      <AboutMe />
-      {/* <Container></Container> */}
-      {/* <main className="py-3 flex-fill"> */}
-      <BookNow />
-      {/* </main> */}
+
+      <section id="aboutMe">
+        <AboutMe />
+      </section>
+
+      <section id="bookNow">
+        <BookNow />
+      </section>
+
       <Footer />
     </div>
   )
