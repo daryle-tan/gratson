@@ -8,6 +8,7 @@ import connectDB from "./config/db.js"
 import asyncHandler from "./middleware/asyncHandler.js"
 import Booking from "./models/bookingModel.js"
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js"
+import twilio from "twilio"
 dotenv.config()
 import path from "path"
 
@@ -30,6 +31,12 @@ if (process.env.NODE_ENV === "production") {
     res.send("API is running...")
   })
 }
+
+const twilioClient = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN,
+)
+
 // @desc Fetch all bookings
 // @route GET/api/bookings
 app.get(
@@ -64,6 +71,14 @@ app.post(
     const newBooking = new Booking({ start, end, name, email, phone })
     const booking = await newBooking.save()
     console.log(req.body, booking)
+
+    // Send SMS
+    const message = await twilioClient.messages.create({
+      body: `Hello ${name}, your session is booked from ${start} to ${end}.`,
+      from: process.env.TWILIO_PHONE_NUMBER,
+      to: phone,
+    })
+
     res.status(201).json(booking)
   }),
 )
