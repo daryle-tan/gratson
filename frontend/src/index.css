@@ -290,3 +290,6 @@ button:hover {
 .rbc-day-slot .rbc-events-container {
   margin-right: 0 !important;
 }
+.navbar-toggler {
+  border: none !important;
+}
