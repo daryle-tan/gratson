@@ -25,7 +25,7 @@ const AboutMe = () => {
           </p>
           <div className="d-flex flex-column justify-content-evenly mt-4">
             <p className="d-flex fs-4 text-center mt-3 mb-5 justify-content-center">
-              Contact Info <br />
+              {/* Contact Info <br /> */}
               Shirley Chui <br />
               555-555-5555 <br />
               test@gmail.com

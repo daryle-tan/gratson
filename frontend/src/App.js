@@ -6,10 +6,13 @@ import Home from "./screens/Home.js"
 import Whatis from "./screens/Whatis.js"
 import AboutMe from "./screens/AboutMe.js"
 import BookNow from "./screens/BookNow.js"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const App = () => {
   return (
     <div className="d-flex flex-column min-vh-100">
+      <ToastContainer />
       <Header />
       <Home />
 

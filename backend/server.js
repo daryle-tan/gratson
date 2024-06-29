@@ -11,6 +11,7 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js"
 import twilio from "twilio"
 dotenv.config()
 import path from "path"
+import nodemailer from "nodemailer"
 
 const app = express()
 const port = process.env.PORT || 5000
@@ -32,10 +33,18 @@ if (process.env.NODE_ENV === "production") {
   })
 }
 
-const twilioClient = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN,
-)
+// const twilioClient = twilio(
+//   process.env.TWILIO_ACCOUNT_SID,
+//   process.env.TWILIO_AUTH_TOKEN,
+// )
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.SMTP_MAIL, // your email
+    pass: process.env.SMTP_PASSWORD, // your email password
+  },
+})
 
 // @desc Fetch all bookings
 // @route GET/api/bookings
@@ -78,6 +87,26 @@ app.post(
       from: process.env.TWILIO_PHONE_NUMBER,
       to: phone,
     })
+
+    // Send email to client
+    const clientMailOptions = {
+      from: process.env.SMTP_MAIL,
+      to: email,
+      subject: "Booking Confirmation",
+      text: `Dear ${name},\n\nYour booking from ${start} to ${end} has been confirmed.\n\nThank you!`,
+    }
+
+    // Send email to admin
+    const adminMailOptions = {
+      from: process.env.SMTP_MAIL,
+      to: process.env.SMTP_MAIL,
+      subject: "New Booking Notification",
+      text: `New booking from ${name}.\n\nDetails:\nStart: ${start}\nEnd: ${end}\nEmail: ${email}\nPhone: ${phone}`,
+    }
+
+    // Send emails
+    await transporter.sendMail(clientMailOptions)
+    await transporter.sendMail(adminMailOptions)
 
     res.status(201).json(booking)
   }),

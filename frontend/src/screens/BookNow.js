@@ -3,6 +3,8 @@ import { Calendar, momentLocalizer } from "react-big-calendar"
 import moment from "moment"
 import "react-big-calendar/lib/css/react-big-calendar.css"
 import axios from "axios"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const localizer = momentLocalizer(moment)
 
@@ -55,7 +57,7 @@ const BookNow = () => {
 
   const handleSelectSlot = ({ start, end }) => {
     if (!isAllowedTimeSlot(start)) {
-      alert("Selected time slot is not available for booking.")
+      toast.error("Selected time slot is not available for booking.")
       return
     }
 
@@ -112,7 +114,7 @@ const BookNow = () => {
           setClientEmail("")
           setClientPhone("")
           setSelectedSlot("")
-          alert("Booking successful!")
+          toast.success("Booking successful!")
         })
         .catch((error) => {
           console.error("Error booking slot:", error)
